@@ -35,7 +35,7 @@ $ docker-compose up -d
 
 # How execute containers?
 
-Run container instances from command line in your Terminal:
+Run container instances from Docker CLI:
 
 Execute MySQL ``db`` container:
 
@@ -49,24 +49,63 @@ Execute ``php`` container:
 $ docker exec -it -u dev php bash
 ```
 
-## Installation of Symfony4 with composer
+# Combo-commands
 
-Run this commands into command line interface of ``php`` container:
+Combo-commands for working with container instances using by `docker-compose`
 
-```bash
-$ cd app/ 
-```
-```bash
-$ composer create-project symfony/skeleton tmp
-```
+1. Stop & rebuild the containers with execute command line interface for main `php` container:
+    ```bash
+    $ docker-compose stop ; docker-compose build ; docker-compose up -d ; docker exec -it -u dev php bash
+    ```
 
-When it’s done, we will get the project to the root path.
+2. Stop and remove containers:
+    ```bash
+    $ docker-compose stop ; docker-compose rm
+    ```
 
-```bash
-$ cp -Rf /var/www/app/tmp/. .
-$ rm -Rf /var/www/app/tmp
-```
+3. Stop. Remove. Build & Execute main container command line interface:
+    ```bash
+    $ docker-compose stop ; docker-compose rm ; docker-compose stop ; docker-compose build ; docker-compose up -d ; docker exec -it -u dev php bash
+    ```
+4. Run command in container command line interface without keeping session
+    ```bash
+    $ docker exec -it -u root php bash -c "cd /var/www/app/ ; ./bin/console about"
+    ```
+
+## Create a nested project into existing container
+
+When it’s done, we will get the sub-project in to root path of base project.
+Run this commands into console of ``php`` container.
+
+1. Go to level up directory ``/var/www/``:
+    ```bash
+    $ cd /var/www/
+    ```
+
+2. Create nested project into base application directory (e.g: ``/var/www/app``):
+    ```bash
+    $ composer create-project symfony/skeleton nested_project
+    ```
+
+3. Go to nested project directory:
+    ```bash
+    $ cd /var/www/app/nested_project
+    ```
+
+4. Check your current **active directory** into container instance:
+    ```bash
+    $ pwd
+    ```
+
+    Console output:
+    ```bash
+    $ /var/www/app/
+    ```
+
+5. Test working of nesting project:
+    ```bash
+    $ ./bin/console about
+    ```
 
 Enjoy,
-
 and happy codding!

@@ -21,7 +21,7 @@ services:
     image: mysql
     command: "--default-authentication-plugin=mysql_native_password"
     ports:
-      - 3339:3306
+      - 3339:3306 # TODO: Change `3339` to set custom port number for MySQL Service
     volumes:
       - /opt/mysql_data:/var/lib/mysql:cached
     environment:
