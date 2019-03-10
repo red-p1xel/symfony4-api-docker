@@ -2,7 +2,7 @@ version: '3'
 services:
 
   apache:
-    container_name: apache
+    container_name: apache # TODO: once for each project e.g: `apache-project_name`
     restart: always
     build: .docker/apache
     environment:
@@ -11,11 +11,12 @@ services:
       - 8181:80
     volumes:
       - .docker/config/vhosts:/etc/apache2/sites-enabled
-      - .:/var/www/app:cached
+      - .:/var/www/app:cached # TODO: Rebuild container after changes into root fs
     depends_on:
       - php
+
   db:
-    container_name: db
+    container_name: db # TODO: once for each project e.g: `db-project_name`
     restart: always
     image: mysql
     command: "--default-authentication-plugin=mysql_native_password"
@@ -30,7 +31,7 @@ services:
       MYSQL_PASSWORD: password
 
   php:
-    container_name: php
+    container_name: php # TODO: once for each project e.g: `php-project_name`
     restart: always
     build: .docker/php
     ports:
@@ -39,7 +40,7 @@ services:
       - .:/var/www/app:cached
       - ./logs:/var/www/app/var/log:cached
     depends_on:
-      - db
+      - db # TODO: equal db container_name e.g: `db-project_name`
     extra_hosts:
       - docker-host.localhost:127.0.0.1
     ### change 127.0.0.1 to your local ip address
